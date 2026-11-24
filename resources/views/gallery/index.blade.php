@@ -2,41 +2,51 @@
 @section('title', 'Foto Alumni')
 @section('icon', '📁')
 @section('content')
-    <form method="GET" action="{{ route('galeri.index') }}" class="toolbar">
+    @php($filtActive = $f['ang'] !== '' || $f['kelas'] !== '' || $f['kota'] !== '' || $f['prof'] !== '' || $f['sort'] !== 'az')
+    <form method="GET" action="{{ route('galeri.index') }}" class="toolbar gsearch">
         <input type="hidden" name="view" value="{{ $f['view'] }}">
         <input type="hidden" name="foto" value="{{ $f['foto'] }}">
-        <div><label for="q">Cari nama</label><input type="search" id="q" name="q" value="{{ $f['q'] }}" style="width:130px"></div>
-        <div><label for="ang">Angkatan</label>
-            <select id="ang" name="ang"><option value="">Semua</option>
-                @foreach ($angkatans as $a)<option value="{{ $a }}" @selected((string) $f['ang'] === (string) $a)>{{ $a }}</option>@endforeach
-            </select></div>
-        <div><label for="kelas">Kelas</label>
-            <select id="kelas" name="kelas"><option value="">Semua</option>
-                @foreach ($kelass as $k)<option @selected($f['kelas'] === $k)>{{ $k }}</option>@endforeach
-            </select></div>
-        <div><label for="kota">Kota</label>
-            <select id="kota" name="kota"><option value="">Semua</option>
-                @foreach ($kotas as $k)<option @selected($f['kota'] === $k)>{{ $k }}</option>@endforeach
-            </select></div>
-        <div><label for="prof">Profesi</label><input type="search" id="prof" name="prof" value="{{ $f['prof'] }}" style="width:110px"></div>
-        <div><label for="sort">Urutkan</label>
-            <select id="sort" name="sort">
-                <option value="az" @selected($f['sort'] === 'az')>A-Z</option>
-                <option value="ang" @selected($f['sort'] === 'ang')>Angkatan</option>
-                <option value="new" @selected($f['sort'] === 'new')>Terbaru gabung</option>
-            </select></div>
-        <div><button class="btn" type="submit">Cari</button> <a class="btn" href="{{ route('galeri.index') }}">Reset</a></div>
+        <input type="search" id="q" name="q" value="{{ $f['q'] }}" placeholder="Cari nama…" aria-label="Cari nama">
+        <button class="btn ibtn" type="submit" title="Cari" aria-label="Cari">🔍</button>
+        <a class="btn ibtn" href="{{ route('galeri.index') }}" title="Reset" aria-label="Reset">✖</a>
+        <details class="filt" @if ($filtActive) open @endif>
+            <summary class="btn" title="Filter lainnya">⚙ Filter</summary>
+            <div class="filtbody">
+                <div><label for="ang">Angkatan</label>
+                    <select id="ang" name="ang"><option value="">Semua</option>
+                        @foreach ($angkatans as $a)<option value="{{ $a }}" @selected((string) $f['ang'] === (string) $a)>{{ $a }}</option>@endforeach
+                    </select></div>
+                <div><label for="kelas">Kelas</label>
+                    <select id="kelas" name="kelas"><option value="">Semua</option>
+                        @foreach ($kelass as $k)<option @selected($f['kelas'] === $k)>{{ $k }}</option>@endforeach
+                    </select></div>
+                <div><label for="kota">Kota</label>
+                    <select id="kota" name="kota"><option value="">Semua</option>
+                        @foreach ($kotas as $k)<option @selected($f['kota'] === $k)>{{ $k }}</option>@endforeach
+                    </select></div>
+                <div><label for="prof">Profesi</label><input type="search" id="prof" name="prof" value="{{ $f['prof'] }}"></div>
+                <div><label for="sort">Urutkan</label>
+                    <select id="sort" name="sort">
+                        <option value="az" @selected($f['sort'] === 'az')>A-Z</option>
+                        <option value="ang" @selected($f['sort'] === 'ang')>Angkatan</option>
+                        <option value="new" @selected($f['sort'] === 'new')>Terbaru gabung</option>
+                    </select></div>
+                <div style="align-self:flex-end"><button class="btn" type="submit">Terapkan</button></div>
+            </div>
+        </details>
     </form>
 
-    <div class="toolbar">
-        <span>Tampilan:</span>
-        @foreach (['grid' => 'Grid Foto', 'list' => 'Daftar', 'kelas' => 'Per Kelas'] as $k => $l)
-            <a class="btn {{ $f['view'] === $k ? 'on' : '' }}" href="{{ request()->fullUrlWithQuery(['view' => $k, 'page' => null]) }}">{{ $l }}</a>
-        @endforeach
-        <span style="margin-left:8px">Foto:</span>
-        @foreach (['then' => 'Dulu', 'now' => 'Sekarang'] as $k => $l)
-            <a class="btn {{ $f['foto'] === $k ? 'on' : '' }}" href="{{ request()->fullUrlWithQuery(['foto' => $k]) }}">{{ $l }}</a>
-        @endforeach
+    <div class="bar2">
+        <span class="seg" role="group" aria-label="Tampilan">
+            @foreach (['grid' => ['▦', 'Grid foto'], 'list' => ['☰', 'Daftar'], 'kelas' => ['🎓', 'Per kelas']] as $k => [$i, $l])
+                <a class="btn ibtn {{ $f['view'] === $k ? 'on' : '' }}" title="{{ $l }}" aria-label="{{ $l }}" href="{{ request()->fullUrlWithQuery(['view' => $k, 'page' => null]) }}">{{ $i }}</a>
+            @endforeach
+        </span>
+        <span class="seg" role="group" aria-label="Jenis foto">
+            @foreach (['then' => ['🕰️', 'Foto dulu'], 'now' => ['📷', 'Foto sekarang']] as $k => [$i, $l])
+                <a class="btn ibtn {{ $f['foto'] === $k ? 'on' : '' }}" title="{{ $l }}" aria-label="{{ $l }}" href="{{ request()->fullUrlWithQuery(['foto' => $k]) }}">{{ $i }}</a>
+            @endforeach
+        </span>
     </div>
 
     @guest

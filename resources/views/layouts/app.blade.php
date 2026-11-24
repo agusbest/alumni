@@ -47,8 +47,8 @@
                 <a class="tbb" href="{{ route('home') }}" aria-label="Tutup, kembali ke beranda">x</a>
             </div>
             <div class="navbar">
-                <a class="btn" href="{{ url()->previous(route('home')) }}">◀ Kembali</a>
-                <a class="btn" href="{{ route('home') }}">🏠 Beranda</a>
+                <a class="btn ibtn" href="{{ url()->previous(route('home')) }}" title="Kembali" aria-label="Kembali">◀</a>
+                <a class="btn ibtn" href="{{ route('home') }}" title="Beranda" aria-label="Beranda">🏠</a>
                 <span class="path">{{ config('reuni.name') }} › @yield('title', 'Beranda')</span>
             </div>
             <div class="wb">
