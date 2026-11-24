@@ -3,7 +3,6 @@
 @section('icon', '🏠')
 @section('content')
     <div class="panel">
-        <div class="ph">Selamat Datang.html</div>
         <p class="logo">{{ config('reuni.name') }}</p>
         <div class="px" style="color:#000080">{{ config('reuni.school') }} · {{ config('reuni.tagline') }}</div>
         <div class="marq" style="margin:8px 0"><span>{{ $marquee }}</span></div>

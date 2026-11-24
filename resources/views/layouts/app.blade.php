@@ -40,11 +40,19 @@
     </nav>
 
     <div id="winwrap">
+        <div class="deskhint" id="deskHint" hidden>
+            <p>🖥️ Jendela ditutup.</p>
+            <p>Klik ikon di kiri untuk membuka menu,<br>atau klik <b>🏠 Selamat Datang</b> di bawah untuk membuka lagi.</p>
+        </div>
         <section class="win">
             <div class="tb">
                 <span aria-hidden="true">@yield('icon', '🪟')</span>
                 <span class="tt">@yield('title', 'Beranda')</span>
-                <a class="tbb" href="{{ route('home') }}" aria-label="Tutup, kembali ke beranda">x</a>
+                @if (request()->routeIs('home'))
+                    <button type="button" class="tbb" id="closeWin" title="Tutup jendela" aria-label="Tutup jendela">x</button>
+                @else
+                    <a class="tbb" href="{{ route('home') }}" title="Tutup, kembali ke beranda" aria-label="Tutup, kembali ke beranda">x</a>
+                @endif
             </div>
             <div class="navbar">
                 <a class="btn ibtn" href="{{ url()->previous(route('home')) }}" title="Kembali" aria-label="Kembali">◀</a>
@@ -88,7 +96,10 @@
             @endif
         </div>
     </details>
-    <div id="tasks" class="small">{{ config('reuni.school') }}</div>
+    <div id="tasks" class="small">
+        <button type="button" class="btn task" id="restoreWin" hidden>🏠 Selamat Datang</button>
+        <span id="schoolName">{{ config('reuni.school') }}</span>
+    </div>
     <div id="tray">
         @if ($user)
             <span>👤 {{ $user->isAdmin() ? 'Admin' : \Illuminate\Support\Str::limit($user->name, 18) }}</span>

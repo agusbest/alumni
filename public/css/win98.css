@@ -131,6 +131,17 @@ dl.d dt{font-weight:bold}dl.d dd{margin:0;word-break:break-word}
 .dpad .btn{min-height:40px;font-size:16px;padding:0}
 .bar{height:14px;background:#000080;display:inline-block;vertical-align:middle}
 
+
+/* jendela beranda bisa ditutup */
+.tbb{cursor:pointer}
+.deskhint{display:none;margin:auto;max-width:360px;text-align:center;color:#fff;text-shadow:1px 1px #000;line-height:1.6}
+#desk.closed .win{display:none}
+#desk.closed .deskhint{display:block}
+[hidden]{display:none!important}
+#desk.closed .deskhint{display:block!important}
+#restoreWin{min-height:24px;padding:1px 8px;margin-right:6px}
+#tasks{display:flex;align-items:center}
+
 /* tombol ikon ringkas */
 .ibtn{min-width:34px;padding:3px 7px;text-align:center;font-size:15px;line-height:1.2}
 .seg{display:inline-flex;gap:2px;align-items:center}

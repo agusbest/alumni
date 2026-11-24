@@ -95,4 +95,18 @@
     });
     g.snake = [{ x: 6, y: 7 }, { x: 5, y: 7 }, { x: 4, y: 7 }]; draw();
   }
+
+  /* Tutup / buka lagi jendela beranda */
+  (function () {
+    var desk = document.getElementById('desk'), x = document.getElementById('closeWin'),
+        back = document.getElementById('restoreWin'), hint = document.getElementById('deskHint');
+    if (!desk || !x || !back) return;
+    function setClosed(c) {
+      desk.classList.toggle('closed', c);
+      back.hidden = !c;
+      if (hint) hint.hidden = !c;
+    }
+    x.addEventListener('click', function () { setClosed(true); });
+    back.addEventListener('click', function () { setClosed(false); });
+  })();
 })();
