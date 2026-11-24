@@ -17,7 +17,7 @@ COPY composer.json composer.lock* ./
 RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction
 COPY . .
 RUN composer dump-autoload --optimize --no-dev \
- && mkdir -p storage/framework/{cache,sessions,views} storage/logs storage/app/private bootstrap/cache \
+ && mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs storage/app/private bootstrap/cache \
  && chown -R www-data:www-data storage bootstrap/cache
 
 RUN chmod +x docker-start.sh
