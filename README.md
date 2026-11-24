@@ -4,7 +4,7 @@ Aplikasi web alumni SMA bernuansa Windows 98 / 2000-an. Tampilannya **satu jende
 jendela, dengan tombol Kembali dan Beranda. Tahun lulus (angkatan) yang tersedia: **2000–2009** (data contoh 2003–2005).
 
 ## Kebutuhan
-- PHP 8.2+ dengan ekstensi `gd`, `pdo_mysql`, `mbstring`, `fileinfo`
+- PHP 8.2+ dengan ekstensi `gd`, `pdo_mysql` (atau `pdo_pgsql` untuk PostgreSQL), `mbstring`, `fileinfo`
 - Composer 2
 - MySQL 8 / MariaDB 10.6+
 
