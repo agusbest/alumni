@@ -29,8 +29,11 @@ class DatabaseSeeder extends Seeder
         Setting::put('moderate_album', '0');
 
         $admin = User::create([
-            'name' => 'Admin Reuni', 'email' => 'admin@reuni2k.test', 'password' => 'password',
-            'role' => 'admin', 'status' => 'active',
+            'name' => 'Admin Reuni',
+            'email' => 'admin@reuni2k.test',
+            'password' => 'password',
+            'role' => 'admin',
+            'status' => 'active',
         ]);
 
         // nama, panggilan, angkatan, kelas, kota, pekerjaan, instansi, lahir, sudah gabung?
@@ -73,8 +76,16 @@ class DatabaseSeeder extends Seeder
             'Pertama kali bikin akun Friendster di warnet dan pasang testimonial teman.',
         ];
         $cita = ['Jadi pilot', 'Jadi dokter', 'Jadi insinyur', 'Jadi artis', 'Jadi guru', 'Jadi pengusaha'];
-        $lagu = ['Peterpan - Mimpi yang Sempurna', 'Sheila On 7 - Dan', 'Dewa 19 - Pangeran Cinta', 'Ungu - Demi Waktu',
-            'Linkin Park - In the End', 'Avril Lavigne - Complicated', 'Coldplay - Yellow', 'Nidji - Hapus Aku'];
+        $lagu = [
+            'Peterpan - Mimpi yang Sempurna',
+            'Sheila On 7 - Dan',
+            'Dewa 19 - Pangeran Cinta',
+            'Ungu - Demi Waktu',
+            'Linkin Park - In the End',
+            'Avril Lavigne - Complicated',
+            'Coldplay - Yellow',
+            'Nidji - Hapus Aku'
+        ];
 
         $profiles = [];
         $users = [];
@@ -83,26 +94,40 @@ class DatabaseSeeder extends Seeder
             $user = null;
             if ($claimed) {
                 $user = User::create([
-                    'name' => $name, 'email' => $slug.'@contoh.test', 'password' => 'password',
-                    'role' => 'alumni', 'status' => 'active',
+                    'name' => $name,
+                    'email' => $slug . '@contoh.test',
+                    'password' => 'password',
+                    'role' => 'alumni',
+                    'status' => 'active',
                 ]);
             }
 
             $p = new AlumniProfile([
-                'name' => $name, 'nickname' => $nick, 'angkatan' => $angkatan, 'kelas' => $kelas,
+                'name' => $name,
+                'nickname' => $nick,
+                'angkatan' => $angkatan,
+                'kelas' => $kelas,
                 'absen' => $claimed ? (string) (1 + ($i * 3) % 38) : null,
-                'birth_date' => $birth, 'city' => $city, 'occupation' => $job, 'company' => $company ?: null,
-                'social' => $claimed ? '@'.$slug : null,
-                'ekskul' => $ekskul[$i % count($ekskul)], 'geng' => $geng[$i % count($geng)],
-                'favorite_teacher' => $guru[$i % count($guru)], 'favorite_subject' => $mapel[$i % count($mapel)],
-                'memory' => $kenangan[$i % count($kenangan)], 'dream_then' => $cita[$i % count($cita)], 'dream_now' => $job,
+                'birth_date' => $birth,
+                'city' => $city,
+                'occupation' => $job,
+                'company' => $company ?: null,
+                'social' => $claimed ? '@' . $slug : null,
+                'ekskul' => $ekskul[$i % count($ekskul)],
+                'geng' => $geng[$i % count($geng)],
+                'favorite_teacher' => $guru[$i % count($guru)],
+                'favorite_subject' => $mapel[$i % count($mapel)],
+                'memory' => $kenangan[$i % count($kenangan)],
+                'dream_then' => $cita[$i % count($cita)],
+                'dream_now' => $job,
                 'favorite_song' => $lagu[$i % count($lagu)],
-                'wa' => $claimed ? '0812-0000-'.(1000 + $i) : null,
-                'email_public' => $claimed ? $slug.'@contoh.test' : null,
+                'wa' => $claimed ? '0812-0000-' . (1000 + $i) : null,
+                'email_public' => $claimed ? $slug . '@contoh.test' : null,
                 'visibility' => [
                     'photo' => $i % 3 === 0 && $i > 8 ? 'alumni' : 'public',
                     'birth' => ($i % 2 === 0 || substr($birth, 5, 2) === '11') ? 'alumni' : 'hidden',
-                    'city' => 'alumni', 'job' => 'alumni',
+                    'city' => 'alumni',
+                    'job' => 'alumni',
                     'social' => $i % 4 === 0 ? 'angkatan' : 'alumni',
                     'memories' => 'alumni',
                     'wa' => $i % 4 === 0 ? 'alumni' : 'hidden',
@@ -116,43 +141,74 @@ class DatabaseSeeder extends Seeder
         }
 
         // Slam book & buku tahunan
-        foreach ([[1, 0, 'Bubud! Jangan lupa traktir bakso di reuni nanti ya. Sukses terus, jangan sombong!'],
-            [4, 0, 'Inget nggak waktu kita kabur dari upacara? Ketawa terus tiap inget.'],
-            [9, 8, 'Ekoplo, tetep jadi anak komputer ya. Kapan bikinin web sekolah kita? :)']] as [$from, $to, $body]) {
+        foreach (
+            [
+                [1, 0, 'Bubud! Jangan lupa traktir bakso di reuni nanti ya. Sukses terus, jangan sombong!'],
+                [4, 0, 'Inget nggak waktu kita kabur dari upacara? Ketawa terus tiap inget.'],
+                [9, 8, 'Ekoplo, tetep jadi anak komputer ya. Kapan bikinin web sekolah kita? :)']
+            ] as [$from, $to, $body]
+        ) {
             SlamMessage::create(['from_profile_id' => $profiles[$from]->id, 'to_profile_id' => $profiles[$to]->id, 'body' => $body]);
         }
-        foreach ([[0, 'Terima kasih semuanya, 3 tahun yang tak terlupakan!'], [1, 'Kita pasti ketemu lagi. Jangan putus kontak ya!'],
-            [8, 'Selamat jalan masa SMA. Sampai jumpa di dunia nyata!']] as [$i, $body]) {
+        foreach (
+            [
+                [0, 'Terima kasih semuanya, 3 tahun yang tak terlupakan!'],
+                [1, 'Kita pasti ketemu lagi. Jangan putus kontak ya!'],
+                [8, 'Selamat jalan masa SMA. Sampai jumpa di dunia nyata!']
+            ] as [$i, $body]
+        ) {
             YearbookMessage::create(['profile_id' => $profiles[$i]->id, 'angkatan' => $profiles[$i]->angkatan, 'kelas' => $profiles[$i]->kelas, 'body' => $body]);
         }
 
         // Mading
-        $pin = Post::create(['user_id' => $admin->id, 'title' => 'PENDAFTARAN REUNI AKBAR DIBUKA!', 'pinned' => true,
-            'body' => 'Teman-teman alumni angkatan 2003, 2004, dan 2005, ayo daftar RSVP lewat menu Reuni & Event. Bawa foto jadul kalian ya!']);
+        $pin = Post::create([
+            'user_id' => $admin->id,
+            'title' => 'PENDAFTARAN REUNI AKBAR DIBUKA!',
+            'pinned' => true,
+            'body' => 'Teman-teman alumni angkatan 2003, 2004, dan 2005, ayo daftar RSVP lewat menu Reuni & Event. Bawa foto jadul kalian ya!'
+        ]);
         PostComment::create(['post_id' => $pin->id, 'user_id' => $users[8]->id, 'body' => 'Sudah daftar! Siapa lagi dari 3 IPA 1?']);
         foreach ([0, 8, 16] as $i) {
             PostReaction::create(['post_id' => $pin->id, 'user_id' => $users[$i]->id, 'emoji' => '👍']);
         }
-        Post::create(['user_id' => $users[2]->id, 'title' => 'Kantin Bu Narti masih ada nggak ya?',
-            'body' => 'Kemarin lewat depan sekolah dan kangen banget sama gorengan dan es teh plastik. Ada yang tahu kabar Bu Narti?']);
-        Post::create(['user_id' => $users[11]->id, 'title' => 'Cari foto kelas 3 IPS 2 tahun 2004',
-            'body' => 'Ada yang punya foto kelas 3 IPS 2? Punyaku hilang waktu pindahan rumah. Boleh dikirim ke album kenangan.']);
+        Post::create([
+            'user_id' => $users[2]->id,
+            'title' => 'Kantin Bu Narti masih ada nggak ya?',
+            'body' => 'Kemarin lewat depan sekolah dan kangen banget sama gorengan dan es teh plastik. Ada yang tahu kabar Bu Narti?'
+        ]);
+        Post::create([
+            'user_id' => $users[11]->id,
+            'title' => 'Cari foto kelas 3 IPS 2 tahun 2004',
+            'body' => 'Ada yang punya foto kelas 3 IPS 2? Punyaku hilang waktu pindahan rumah. Boleh dikirim ke album kenangan.'
+        ]);
 
         // Album (gambar contoh tanpa berkas)
-        foreach ([['Study tour ke Bali, bus tanpa AC tapi hati adem', 2003, 200, 4, [0, 4, 7]],
-            ['Final futsal class meeting 3 IPA 1', 2004, 30, 8, [8, 12, 15]],
-            ['Persami di bumi perkemahan', 2005, 100, 16, [16, 18]],
-            ['Pentas seni akhir tahun, band sekolah tampil!', 2005, 300, 19, [19, 20]]] as [$cap, $year, $hue, $by, $tags]) {
+        foreach (
+            [
+                ['Study tour ke Bali, bus tanpa AC tapi hati adem', 2003, 200, 4, [0, 4, 7]],
+                ['Final futsal class meeting 3 IPA 1', 2004, 30, 8, [8, 12, 15]],
+                ['Persami di bumi perkemahan', 2005, 100, 16, [16, 18]],
+                ['Pentas seni akhir tahun, band sekolah tampil!', 2005, 300, 19, [19, 20]]
+            ] as [$cap, $year, $hue, $by, $tags]
+        ) {
             $photo = AlbumPhoto::create(['user_id' => $users[$by]->id, 'caption' => $cap, 'year' => $year, 'hue' => $hue, 'status' => 'ok']);
-            $photo->tags()->sync(collect($tags)->map(fn ($t) => $profiles[$t]->id)->all());
+            $photo->tags()->sync(collect($tags)->map(fn($t) => $profiles[$t]->id)->all());
         }
 
         // Reuni
-        $e1 = Event::create(['title' => 'Nobar & Kumpul Santai Alumni', 'starts_at' => now()->addDays(14)->setTime(19, 0),
-            'place' => 'Kafe Kopi Kenangan Lama, Semarang', 'description' => 'Ngopi, nostalgia, tukar foto jadul. Santai, datang saja!']);
+        $e1 = Event::create([
+            'title' => 'Nobar & Kumpul Santai Alumni',
+            'starts_at' => now()->addDays(14)->setTime(19, 0),
+            'place' => 'Kafe Kopi Kenangan Lama, Semarang',
+            'description' => 'Ngopi, nostalgia, tukar foto jadul. Santai, datang saja!'
+        ]);
         $e1->attendees()->sync([$users[19]->id, $users[7]->id]);
-        $e2 = Event::create(['title' => 'REUNI AKBAR Angkatan 2003-2005', 'starts_at' => now()->addDays(60)->setTime(9, 0),
-            'place' => 'Aula SMA Negeri 1 Contoh', 'description' => 'Upacara bendera nostalgia, bazar kantin jadul, pentas band, dan foto bersama di depan gerbang sekolah.']);
+        $e2 = Event::create([
+            'title' => 'REUNI AKBAR Angkatan 2003-2005',
+            'starts_at' => now()->addDays(60)->setTime(9, 0),
+            'place' => 'Aula SMU Negeri 3 Cibatu',
+            'description' => 'Upacara bendera nostalgia, bazar kantin jadul, pentas band, dan foto bersama di depan gerbang sekolah.'
+        ]);
         $e2->attendees()->sync([$users[0]->id, $users[8]->id, $users[16]->id, $users[1]->id]);
 
         // Guestbook, playlist, iuran
@@ -160,23 +216,57 @@ class DatabaseSeeder extends Seeder
         GuestbookEntry::create(['name' => 'Sri Wahyuni', 'angkatan' => 2003, 'body' => 'Kangen kalian semua. Sampai ketemu di reuni!']);
         GuestbookEntry::create(['name' => 'Tamu', 'angkatan' => null, 'body' => 'Salam dari adik kelas 2010 :)']);
 
-        foreach ([['Mimpi yang Sempurna', 'Peterpan', 2003, 0], ['Dan', 'Sheila On 7', 2003, 2], ['Pangeran Cinta', 'Dewa 19', 2005, 17],
-            ['Complicated', 'Avril Lavigne', 2004, 9], ['In the End', 'Linkin Park', 2004, 12], ['Yellow', 'Coldplay', 2005, 20]] as [$t, $a, $y, $by]) {
+        foreach (
+            [
+                ['Mimpi yang Sempurna', 'Peterpan', 2003, 0],
+                ['Dan', 'Sheila On 7', 2003, 2],
+                ['Pangeran Cinta', 'Dewa 19', 2005, 17],
+                ['Complicated', 'Avril Lavigne', 2004, 9],
+                ['In the End', 'Linkin Park', 2004, 12],
+                ['Yellow', 'Coldplay', 2005, 20]
+            ] as [$t, $a, $y, $by]
+        ) {
             PlaylistTrack::create(['user_id' => $users[$by]->id, 'title' => $t, 'artist' => $a, 'angkatan' => $y]);
         }
 
-        foreach ([['in', 'Budi Santoso', 250000, 'Iuran panitia', 15], ['in', 'Eko Wahyudi', 250000, 'Iuran panitia', 14],
-            ['in', 'Sari Kartika', 500000, 'Donasi konsumsi', 9], ['out', 'Percetakan Cahaya', 300000, 'Cetak spanduk', 5]] as [$type, $name, $amt, $note, $ago]) {
+        foreach (
+            [
+                ['in', 'Budi Santoso', 250000, 'Iuran panitia', 15],
+                ['in', 'Eko Wahyudi', 250000, 'Iuran panitia', 14],
+                ['in', 'Sari Kartika', 500000, 'Donasi konsumsi', 9],
+                ['out', 'Percetakan Cahaya', 300000, 'Cetak spanduk', 5]
+            ] as [$type, $name, $amt, $note, $ago]
+        ) {
             LedgerEntry::create(['type' => $type, 'name' => $name, 'amount' => $amt, 'note' => $note, 'date' => now()->subDays($ago)->toDateString()]);
         }
 
         // Pendaftaran menunggu (satu klaim profil lama, satu profil baru)
-        User::create(['name' => 'Mira Wulandari', 'email' => 'mira@contoh.test', 'password' => 'password', 'role' => 'alumni',
-            'status' => 'pending', 'reg_angkatan' => 2004, 'reg_kelas' => '3 IPS 2']);
-        User::create(['name' => 'Tono Setiawan', 'email' => 'tono@contoh.test', 'password' => 'password', 'role' => 'alumni',
-            'status' => 'pending', 'reg_angkatan' => 2003, 'reg_kelas' => '3 IPS 1', 'claim_profile_id' => $profiles[6]->id]);
+        User::create([
+            'name' => 'Mira Wulandari',
+            'email' => 'mira@contoh.test',
+            'password' => 'password',
+            'role' => 'alumni',
+            'status' => 'pending',
+            'reg_angkatan' => 2004,
+            'reg_kelas' => '3 IPS 2'
+        ]);
+        User::create([
+            'name' => 'Tono Setiawan',
+            'email' => 'tono@contoh.test',
+            'password' => 'password',
+            'role' => 'alumni',
+            'status' => 'pending',
+            'reg_angkatan' => 2003,
+            'reg_kelas' => '3 IPS 1',
+            'claim_profile_id' => $profiles[6]->id
+        ]);
 
-        Report::create(['reporter_id' => $users[3]->id, 'type' => 'post', 'target_id' => $pin->id,
-            'label' => 'Contoh laporan: komentar kurang sopan di mading', 'reason' => 'Dilaporkan dari mading']);
+        Report::create([
+            'reporter_id' => $users[3]->id,
+            'type' => 'post',
+            'target_id' => $pin->id,
+            'label' => 'Contoh laporan: komentar kurang sopan di mading',
+            'reason' => 'Dilaporkan dari mading'
+        ]);
     }
 }
